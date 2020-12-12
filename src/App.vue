@@ -1,28 +1,31 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <form @submit.prevent="salvarForm" method="post">
+      <input type="text" v-model="nome" autocomplete="off">
+      <button type="submit">Salvar</button>
+      <button type="button" @click="mostrarNome">Mostrar Nome</button>
+    </form>
+
+    <h1>Nome: {{ nome }}</h1>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  data () {
+    return {
+      nome: ''
+    }
+  },
+  methods: {
+    salvarForm () {
+      alert(this.nome)
+    },
+    mostrarNome () {
+      alert(`o nome digitado é: ${this.nome}`)
+    }
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
