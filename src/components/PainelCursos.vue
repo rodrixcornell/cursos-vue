@@ -1,9 +1,9 @@
 <template>
   <div class="row">
-    <div v-for="c in cursos" :key="c.url">
+    <div v-for="c in cursos" :key="c.id">
        <b-card
         :title="c.nome"
-        :img-src="c.capa"
+        :img-src="`data:image/jpeg;base64,${c.capa}`"
         img-alt="Image"
         img-top
         tag="article"
@@ -19,36 +19,36 @@
 </template>
 
 <script>
+import Axios from 'axios'
 export default {
   name: 'PainelCursos',
   data () {
     return {
-      cursos: [
-        {
-          nome: 'Curso PHP',
-          url: 'http://curso.php',
-          capa: 'https://picsum.photos/600/300/?image=21',
-          descricao: 'Curso Legal de PHP'
-        },
-        {
-          nome: 'Curso Javascript',
-          url: 'http://curso.javascript',
-          capa: 'https://picsum.photos/600/300/?image=22',
-          descricao: 'Curso Legal de Javascript'
-        },
-        {
-          nome: 'Curso Python',
-          url: 'http://curso.python',
-          capa: 'https://picsum.photos/600/300/?image=23',
-          descricao: 'Curso Legal de Python'
-        },
-        {
-          nome: 'Curso Ruby',
-          url: 'http://curso.ruby',
-          capa: 'https://picsum.photos/600/300/?image=24',
-          descricao: 'Curso Legal de Ruby'
-        }
-      ]
+    }
+  },
+  mounted () {
+    Axios.get('http://laravel-vue-new.net/api/cursos')
+      .then(({ data }) => {
+        console.log(data)
+        this.$store.commit('definirCursos', data)
+        // this.$swal({
+        //   icon: 'success',
+        //   title: 'Sucesso',
+        //   text: 'Curso cadastrado com sucesso'
+        // })
+      })
+      .catch(( err ) => {
+        console.log(err)
+        this.$swal({
+          icon: 'error',
+          title: 'Ops',
+          text: 'Erro ao cadastra curso'
+        })
+      })
+  },
+  computed: {
+    cursos () {
+      return this.$store.state.cursos
     }
   }
 }
